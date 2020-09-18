@@ -10,33 +10,40 @@
 
 import random
 
-print('===' * 21)
-print('{:^63}'.format('Sorteio'))
-print('===' * 21)
+
+class Chicken_Dinner():
+
+    def __init__(self, students):
+        """
+        Class constructor.
+        """
+        self.students = students
+        self.order = []
+
+    def chicken_dinner(self):
+        """
+        This function randomly shuffle the student's list.
+        """
+        while len(students) > 0:
+            random.shuffle(students)
+            self.order.append(students.pop(0))
+        return self.order
+
+    def print_result(self):
+        """
+        This function prints the order
+        """
+        a = self.chicken_dinner()
+        print('===' * 21,
+              '{:^63}'.format('Sorteio'),
+              '===' * 21, '  A ordem de apresentação é: \n', sep="\n")
+
+        for i in range(len(a)):
+            print('    {}º - {}'.format(i+1, a[i]))
+
+        print('---' * 21,
+              '{:>63}'.format('Autor: Francisco Camello'), sep="\n")
 
 
-def chicken_dinner():
-    """
-    This function randomly shuffle the student's list.
-    """
-    students = ['Joao', 'Maria', 'Jose', 'Joaquim', 'Madalena', 'Enyel']
-    order = []
-    while len(students) > 0:
-        random.shuffle(students)
-        order.append(students.pop(0))
-    return order
-
-
-def print_result():
-    """
-    This function prints the order
-    """
-    a = chicken_dinner()
-    print('  A ordem de apresentação é: \n')
-    for i in range(len(a)):
-
-        print('    {}º - {}'.format(i+1, a[i]))
-    print('---' * 21, '{:>63}'.format('Autor: Francisco Camello'), sep="\n")
-
-
-print_result()
+students = ['Joao', 'Maria', 'Jose', 'Joaquim', 'Madalena', 'Enyel']
+Chicken_Dinner(students).print_result()
