@@ -18,29 +18,37 @@ class Chicken_Dinner():
         """
         Class constructor.
         """
-        # self.students = students
-        self.order = []
+        #self.common = list
 
     def students_list(self):
-        common, second_day, prio_first_day, prio_second_day = [], [], [], []
+        """
+        This function filter the students from your priority
+        level from a students_dict.
+        """
 
-        with open('students2.txt', 'r', encoding="utf8") as jsonFile:
+        common, zero, one, two, three = [], [], [], [], []
+
+        with open('students2.json', 'r', encoding="utf8") as jsonFile:
             st_dict = json.load(jsonFile)
 
         for k, v in st_dict.items():
-            if v == 0 or v == 1:
-                prio_first_day.append(k)
-            elif v == 5:
-                common.append(k)
-            elif v == 2 or v == 3:
-                prio_second_day.append(k)
+            if v == 0:
+                zero.append(k)
+            elif v == 1:
+                one.append(k)
+            elif v == 2:
+                two.append(k)
+            elif v == 3:
+                three.append(k)
             else:
-                second_day.append(k)
-        return common, prio_first_day, prio_second_day
+                common.append(k)
 
-    def common(self):
+        return common, zero, one, two, three
+
+    def no_priority(self):
         """
-        This function randomly shuffle the student's list.
+        This function randomly shuffle the student's in 
+        the no priority list and divide between first and second day.
         """
         common = self.students_list()[0]
         common_order, common_order_23, common_order_30 = [], [], []
@@ -49,46 +57,58 @@ class Chicken_Dinner():
             random.shuffle(common)
             common_order.append(common.pop(0))
         half = len(common_order)//2
+        another_half = len(common_order)-half
         common_order_23 = common_order[:half]
-        common_order_30 = common_order[half:]
+        common_order_30 = common_order[another_half:]
 
         return common_order_23, common_order_30
 
-    def prio_first_day(self):
+    def prio_zero(self):
         """
-        This function randomly shuffle the student's list.
+        This function randomly shuffle the student's in 
+        the priority list for the first day.
         """
-        prio_first_day = self.students_list()[1]
-        prio_first_day_order = []
 
-        while len(prio_first_day) > 0:
-            random.shuffle(prio_first_day)
-            prio_first_day_order.append(prio_first_day.pop(0))
-        return prio_first_day_order
+        prio_zero = self.students_list()[1]
+        prio_one = self.students_list()[2]
+        prio_zero_ordered = []
 
-    def prio_second_day(self):
-        """
-        This function randomly shuffle the student's list.
-        """
-        prio_second_day = self.students_list()[2]
-        prio_second_day_order = []
+        while len(prio_zero) > 0:
+            random.shuffle(prio_zero)
+            prio_zero_ordered.append(prio_zero.pop(0))
+        while len(prio_one) > 0:
+            random.shuffle(prio_one)
+            prio_zero_ordered.append(prio_one.pop(0))
+        return prio_zero_ordered
 
-        while len(prio_second_day) > 0:
-            random.shuffle(prio_second_day)
-            prio_second_day_order.append(prio_second_day.pop(0))
-        return prio_second_day_order
+    def prio_two(self):
+        """
+        This function randomly shuffle the student's in 
+        the priority list for the second day.
+        """
+
+        prio_two = self.students_list()[3]
+        prio_three = self.students_list()[4]
+        prio_two_order = []
+
+        while len(prio_two) > 0:
+            random.shuffle(prio_two)
+            prio_two_order.append(prio_two.pop(0))
+        while len(prio_three) > 0:
+            random.shuffle(prio_three)
+            prio_two_order.append(prio_three.pop(0))
+        return prio_two_order
 
     def print_result(self):
         """
         This function prints the order
         """
-        pf_day, ps_day = self.prio_first_day(), self.prio_second_day()
-        f_day, s_day = self.common()[0], self.common()[1]
 
-        print('===' * 21,
-              '{:^63}'.format('Sorteio'),
-              '===' * 21, '  A ordem de apresentação é: \n',
-              '  Prioridades do primeiro dia: \n', sep="\n")
+        pf_day, ps_day = self.prio_zero(), self.prio_two()
+        f_day, s_day = self.no_priority()[0], self.no_priority()[1]
+        count1, count2 = len(pf_day), len(ps_day)
+
+        print('  Prioridades do primeiro dia: \n')
         for i in range(len(pf_day)):
             print('    {}º - {}'.format(i+1, pf_day[i]))
 
@@ -96,7 +116,8 @@ class Chicken_Dinner():
               '  Vala comum do primeiro dia: \n', sep="\n")
 
         for i in range(len(f_day)):
-            print('    {}º - {}'.format(i+4, f_day[i]))
+            print('    {}º - {}'.format(count1+1, f_day[i]))
+            count1 += 1
 
         print('---' * 21,
               '  Prioridades do segundo dia: \n', sep="\n")
@@ -106,11 +127,14 @@ class Chicken_Dinner():
         print('---' * 21,
               '  Vala comum do segundo dia: \n', sep="\n")
         for i in range(len(s_day)):
-            print('    {}º - {}'.format(i+5, s_day[i]))
-
-        print('---' * 21,
-              '{:>63}'.format('Autor: Francisco Camello'), sep="\n")
+            print('    {}º - {}'.format(count2+1, s_day[i]))
+            count2 += 1
 
 
-# students = ['Joao', 'Maria', 'Jose', 'Joaquim', 'Madalena', 'Enyel']
+print('===' * 21, '{:^63}'.format('Sorteio'), '===' *
+      21, '  A ordem de apresentação é: \n', sep="\n")
+
 Chicken_Dinner().print_result()
+
+print('---' * 21,
+      '{:>63}'.format('Autor: Francisco Camello'), sep="\n")
